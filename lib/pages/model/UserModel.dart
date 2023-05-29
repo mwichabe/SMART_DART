@@ -3,8 +3,9 @@ class UserModelOne{
   String? email;
   String? firstName;
   String? secondName;
+  String? profilePictureUrl;
 
-  UserModelOne({this.uid,this.email,this.firstName,this.secondName});
+  UserModelOne({this.uid,this.email,this.firstName,this.secondName,this.profilePictureUrl});
   // data from server
   factory UserModelOne.fromMap(map)
   {
@@ -12,7 +13,8 @@ class UserModelOne{
         uid:  map['uid'],
         email: map['email'],
         firstName: map['firstName'],
-        secondName: map['secondName']
+        secondName: map['secondName'],
+        profilePictureUrl: map['profilePictureUrl']
 
     );
   }
@@ -25,7 +27,7 @@ class UserModelOne{
         'email':email,
         'firstName': firstName,
         'secondName': secondName,
-
+        'profilePictureUrl': profilePictureUrl,
       };
   }
 

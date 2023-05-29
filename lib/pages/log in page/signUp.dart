@@ -1,4 +1,5 @@
 import 'package:academics/pages/contentPage/ContentPAge.dart';
+import 'package:academics/pages/log%20in%20page/profilePicture.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -13,6 +14,7 @@ class SignUp extends StatefulWidget {
 
 class _SignUpState extends State<SignUp> {
   //form key
+  bool isUploading = false;
   final _formKey = GlobalKey<FormState>();
   final _auth = FirebaseAuth.instance;
   String errorMessage='';
@@ -160,7 +162,9 @@ class _SignUpState extends State<SignUp> {
         ),
       ),
     );
-    final signUpButton = Material(
+    final signUpButton = isUploading
+        ? CircularProgressIndicator() // Display the loading indicator
+        : Material(
       elevation: 5,
       borderRadius: BorderRadius.circular(50),
       color: Colors.orange[400],
@@ -169,9 +173,9 @@ class _SignUpState extends State<SignUp> {
         minWidth: MediaQuery.of(context).size.width,
         onPressed: () {
           register(emailEditingController.text, passwordEditingController.text);
-
         },
-        child: const Text('SIGNUP',
+        child: const Text(
+          'SIGNUP',
           textAlign: TextAlign.center,
           style: TextStyle(fontSize: 20),
         ),
@@ -261,7 +265,7 @@ class _SignUpState extends State<SignUp> {
         .set(userModel.toMap());
     Navigator.pushAndRemoveUntil(
         (context),
-        MaterialPageRoute(builder: (context)=>const ContentPage()),
+        MaterialPageRoute(builder: (context)=>const ProfilePicture()),
             (route) => false);
     Fluttertoast.showToast(msg: 'Account created successfully',
       toastLength: Toast.LENGTH_SHORT,
@@ -270,24 +274,34 @@ class _SignUpState extends State<SignUp> {
       timeInSecForIosWeb: 1,
       fontSize: 16,);
   }
-  void register(String email,String password) async
-  {
-    if (_formKey.currentState!.validate())
-    {
-      await _auth.createUserWithEmailAndPassword(
-          email: emailEditingController.text,
-          password: passwordEditingController.text)
-          .then((value) => {
-        postDetailsToFirestore()
-      }).catchError((e)
-      {Fluttertoast.showToast(msg: e!.message,
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.BOTTOM,
-        backgroundColor: Colors.red,
-        timeInSecForIosWeb: 1,
-        fontSize: 16,);
+  void register(String email, String password) async {
+    if (_formKey.currentState!.validate()) {
+      setState(() {
+        isUploading = true; // Set loading indicator to true before uploading
+      });
+
+      await _auth
+          .createUserWithEmailAndPassword(
+        email: emailEditingController.text,
+        password: passwordEditingController.text,
+      )
+          .then((value) {
+        postDetailsToFirestore();
+      })
+          .catchError((e) {
+        Fluttertoast.showToast(
+          msg: e!.message,
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          backgroundColor: Colors.red,
+          timeInSecForIosWeb: 1,
+          fontSize: 16,
+        );
+      });
+
+      setState(() {
+        isUploading = false; // Set loading indicator to false after uploading
       });
     }
   }
-
 }

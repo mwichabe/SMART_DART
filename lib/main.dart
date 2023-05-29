@@ -1,3 +1,5 @@
+import 'dart:js';
+
 import 'package:academics/pages/Home.dart';
 import 'package:academics/pages/contentPage/AcademicResearch.dart';
 import 'package:academics/pages/contentPage/ContentPAge.dart';
@@ -17,6 +19,7 @@ import 'package:academics/pages/contentPage/services.dart';
 import 'package:academics/pages/log%20in%20page/Auth.dart';
 import 'package:academics/pages/log%20in%20page/DeleteAccount.dart';
 import 'package:academics/pages/log%20in%20page/logIn.dart';
+import 'package:academics/pages/log%20in%20page/profilePicture.dart';
 import 'package:academics/pages/log%20in%20page/resetPass.dart';
 import 'package:academics/pages/log%20in%20page/signUp.dart';
 import 'package:academics/pages/log%20in%20page/termsAndCondition.dart';
@@ -31,6 +34,7 @@ Future<void> main() async  {
     initialRoute: 'auth',
     routes:
     {
+
       'auth': (context)=> const  AuthPage(),
       'termsAndCo': (context)=> const TermsAndCondition(),
       'home': (context)=>const Home(),
@@ -53,6 +57,7 @@ Future<void> main() async  {
       'quantTechniques840': (context)=> const QuantitativeTechniques840(),
       'msc': (context)=> const MSc(),
       'researchMethods': (context)=> const ResearchMethods(),
+      'profile': (context)=> const ProfilePicture(),
 
 
     },
